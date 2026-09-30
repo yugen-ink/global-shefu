@@ -21,7 +21,7 @@ export default function ShefuApp() {
     if (!titleInput || !secretInput) return;
     
     // 实际项目中这里会将数据 POST 到 Supabase 数据库
-    const mockNewId = 'puzzle_' + Math.random().toString(36.substring(2, 9));
+    const mockNewId = 'puzzle_' + Math.random().toString(36).substring(2, 9);
     setPuzzleId(mockNewId);
     setView('play');
     // 清空输入
