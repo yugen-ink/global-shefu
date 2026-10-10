@@ -20,6 +20,11 @@ console.log('[Create challenge diagnostic]', {
   title: title.trim(),
 });
 
+console.log('[Create challenge diagnostic]', {
+  statusToInsert: 'active',
+  supabaseHost: new URL(process.env.SUPABASE_URL).host,
+});
+
     await supabaseFetch('puzzles', {
       method: 'POST',
       headers: { Prefer: 'return=minimal' },
