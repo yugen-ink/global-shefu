@@ -14,6 +14,13 @@ export default async function handler(req, res) {
     const hostToken = crypto.randomBytes(24).toString('hex');
     const createdAt = new Date().toISOString();
 
+console.log('[Create challenge diagnostic]', {
+  status: 'active',
+  idType: typeof id,
+  idLength: id.length,
+  timestamp: createdAt
+});
+
     await supabaseFetch('puzzles', {
       method: 'POST',
       headers: { Prefer: 'return=minimal' },
