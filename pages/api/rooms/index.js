@@ -23,7 +23,7 @@ export default async function handler(req, res) {
         secret_answer: answer.trim(),
         host_token: hostToken,
         created_at: createdAt,
-        status: 'open'
+        status: 'active'
       })
     });
 
