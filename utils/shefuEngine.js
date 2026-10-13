@@ -215,12 +215,9 @@ function calculateHexagram(lunarDate, hour) {
   };
 }
 
-function generateModernClue({ timeZone, clueNumber = 1 }) {
-  if (!Number.isInteger(clueNumber) || clueNumber < 1 || clueNumber > 4) {
-    throw new RangeError('clueNumber must be an integer from 1 to 4');
-  }
-
-  // Deliberately read the clock anew for each clue request.
+```js
+function generateModernClues({ timeZone }) {
+  // Read the clock once so all four clues use the same moment.
   const timestamp = Date.now();
   const localTime = getLocalTimeParts(timeZone, timestamp);
   const lunarDate = getLunarDate(localTime);
@@ -242,8 +239,7 @@ function generateModernClue({ timeZone, clueNumber = 1 }) {
   ];
 
   return {
-    clueNumber,
-    clue: clues[clueNumber - 1],
+    clues,
     timestamp,
     timeZone,
     localTime,
@@ -261,6 +257,23 @@ function generateModernClue({ timeZone, clueNumber = 1 }) {
   };
 }
 
+// Keep the original single-clue function for compatibility.
+function generateModernClue({ timeZone, clueNumber = 1 }) {
+  if (!Number.isInteger(clueNumber) || clueNumber < 1 || clueNumber > 4) {
+    throw new RangeError('clueNumber must be an integer from 1 to 4');
+  }
+
+  const result = generateModernClues({ timeZone });
+
+  return {
+    ...result,
+    clueNumber,
+    clue: result.clues[clueNumber - 1]
+  };
+}
+
+
+
 function normalizeAnswer(value) {
   return String(value || '')
     .trim()
@@ -275,6 +288,7 @@ function isGuessCorrect(guess, answer) {
 
 module.exports = {
   generateModernClue,
+  generateModernClues,
   getLocalTimeParts,
   getHourBranchNumber,
   getYearBranchNumber,

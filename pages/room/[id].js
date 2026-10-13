@@ -6,8 +6,7 @@ export default function Room() {
   const { id } = router.query;
   const [puzzle, setPuzzle] = useState(null);
   const [guesses, setGuesses] = useState([]);
-  const [clue, setClue] = useState('');
-  const [clueNumber, setClueNumber] = useState(0);
+  const [clues, setClues] = useState([]);
   const [guess, setGuess] = useState('');
   const [status, setStatus] = useState('');
   const [loading, setLoading] = useState(true);
@@ -28,14 +27,36 @@ export default function Room() {
     loadRoom();
   }, [id, router.query.host]);
 
-  async function revealClue() {
-    setClueLoading(true); setStatus('');
+
+async function revealClue() {
+  if (clueLoading || clues.length > 0 || puzzle?.status === 'solved') {
+    return;
+  }
+
+  setClueLoading(true);
+  setStatus('');
+
+  try {
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const response = await fetch(`/api/rooms/${id}/clue`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ clueNumber: clueNumber + 1, timeZone }) });
+    const response = await fetch(`/api/rooms/${id}/clue`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ timeZone })
+    });
+
     const data = await response.json();
-    if (response.ok) { setClue(data.clue); setClueNumber(data.clueNumber); } else setStatus(data.error || 'Could not reveal clue.');
+
+    if (response.ok) {
+      setClues(data.clues || []);
+    } else {
+      setStatus(data.error || 'Could not reveal clues.');
+    }
+  } catch {
+    setStatus('Could not reveal clues. Please try again.');
+  } finally {
     setClueLoading(false);
   }
+}
 
   async function submitGuess(e) {
     e.preventDefault();
@@ -78,10 +99,33 @@ export default function Room() {
         <section className="mt-10 space-y-4">
           <div className="flex justify-between items-center">
             <span className="text-xs text-neutral-400">Need a clue?</span>
-            <button onClick={revealClue} disabled={clueLoading || puzzle.status === 'solved' || clueNumber >= 4} className="px-4 py-2 border border-white/20 text-xs font-mono disabled:opacity-40">{clueLoading ? 'DEDUCING...' : clueNumber >= 4 ? '[ ALL CLUES REVEALED ]' : '[ REVEAL A CLUE ]'}</button>
-          </div>
-          {clue && <div className="p-4 bg-neutral-900/60 border border-neutral-800 text-sm text-neutral-300 font-mono">&gt; {clue}</div>}
-        </section>
+           
+<button
+  onClick={revealClue}
+  disabled={
+    clueLoading ||
+    clues.length > 0 ||
+    puzzle.status === 'solved'
+  }
+>
+  {clueLoading
+    ? 'DEDUCING...'
+    : clues.length > 0
+      ? '[ ALL CLUES REVEALED ]'
+      : '[ REVEAL ALL CLUES ]'}
+</button>
+
+{clues.length > 0 && (
+  <div>
+    {clues.map((item, index) => (
+      <div key={index}>
+        &gt; {item}
+      </div>
+    ))}
+  </div>
+)}
+
+
 
         <form onSubmit={submitGuess} className="mt-8 pt-6 border-t border-neutral-800 space-y-3">
           <label className="block text-xs uppercase tracking-wider text-neutral-400">Your Guess</label>
