@@ -215,7 +215,6 @@ function calculateHexagram(lunarDate, hour) {
   };
 }
 
-```js
 function generateModernClues({ timeZone }) {
   // Read the clock once so all four clues use the same moment.
   const timestamp = Date.now();
