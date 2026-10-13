@@ -52,7 +52,7 @@ begin
   insert into public.guesses (puzzle_id, player_name, guess_text, is_correct)
   values (
     p_puzzle_id,
-    coalesce(nullif(pg_catalog.trim(p_player_name), ''), 'Anonymous'),
+    coalesce(nullif(pg_catalog.btrim(p_player_name), ''), 'Anonymous'),
     p_guess_text,
     p_is_correct
   );

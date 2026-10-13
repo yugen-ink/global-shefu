@@ -30,7 +30,8 @@ export default function Room() {
 
   async function revealClue() {
     setClueLoading(true); setStatus('');
-    const response = await fetch(`/api/rooms/${id}/clue`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ clueNumber: clueNumber + 1 }) });
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const response = await fetch(`/api/rooms/${id}/clue`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ clueNumber: clueNumber + 1, timeZone }) });
     const data = await response.json();
     if (response.ok) { setClue(data.clue); setClueNumber(data.clueNumber); } else setStatus(data.error || 'Could not reveal clue.');
     setClueLoading(false);

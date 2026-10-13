@@ -41,6 +41,14 @@ npm run dev
 npm run build
 ```
 
+## Time-based clue engine
+
+The clue API now reads the current timestamp for every clue request and uses the player browser's IANA timezone (for example, `Asia/Singapore`) to derive local civil time. `lunar-javascript` converts that local date to the lunar calendar. The engine then uses one documented convention: upper trigram = (lunar-year earthly-branch number + lunar month + lunar day) mod 8; lower trigram adds the local earthly-branch hour; moving line uses the same total mod 6. A zero remainder maps to 8 for trigrams and 6 for the moving line.
+
+The current product behavior intentionally computes each progressive clue from the time of that individual request. Because the time is re-read on each request, separate clues may come from different time charts and may not describe one perfectly consistent object. The object-attribute mapping is a game-design heuristic, not a factual identification method. Leap lunar months are treated as their corresponding numbered lunar month.
+
+Run the pure calculation tests with `node --test tests/shefuEngine.test.js`. A full Next.js build also requires installing project dependencies with `npm install`.
+
 ## 4. Acceptance test
 
 1. Create a challenge with a short title and answer.
