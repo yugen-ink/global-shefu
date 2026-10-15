@@ -244,6 +244,7 @@ function generateModernClue({ timeZone, clueNumber = 1 }) {
   return {
     clueNumber,
     clue: clues[clueNumber - 1],
+    clues,
     timestamp,
     timeZone,
     localTime,
