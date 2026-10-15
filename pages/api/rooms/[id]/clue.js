@@ -1,5 +1,5 @@
 import { supabaseFetch, logApiError } from '../../../../lib/supabaseAdmin';
-import { generateModernClues } from '../../../../utils/shefuEngine';
+import { generateModernClue } from '../../../../utils/shefuEngine';
 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
@@ -13,7 +13,10 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Invalid challenge ID.' });
   }
 
-
+  const requested = Number(req.body?.clueNumber ?? 1);
+  if (!Number.isInteger(requested) || requested < 1 || requested > 4) {
+    return res.status(400).json({ error: 'Clue number must be between 1 and 4.' });
+  }
 
   const timeZone = req.body?.timeZone;
   if (typeof timeZone !== 'string' || !timeZone.trim() || timeZone.length > 100) {
@@ -30,15 +33,13 @@ export default async function handler(req, res) {
       return res.status(409).json({ error: 'This challenge has already been solved.' });
     }
 
-
-const result = generateModernClues({ timeZone });
-return res.status(200).json({
-  clues: result.clues,
-  localTime: result.localTime,
-  timeZone: result.timeZone
-});
-
-
+    const result = generateModernClue({ timeZone, clueNumber: requested });
+    return res.status(200).json({
+      clue: result.clue,
+      clueNumber: result.clueNumber,
+      localTime: result.localTime,
+      timeZone: result.timeZone
+    });
   } catch (error) {
     logApiError('/api/rooms/[id]/clue POST', error);
     if (error instanceof RangeError || error instanceof TypeError) {

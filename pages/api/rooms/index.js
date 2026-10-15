@@ -14,7 +14,10 @@ export default async function handler(req, res) {
 
   const title = cleanText(req.body?.title);
   const answer = cleanText(req.body?.answer);
+  const playerName = cleanText(req.body?.playerName);
   if (!title || !answer) return res.status(400).json({ error: 'Title and secret answer are required.' });
+  if (!playerName || playerName.toLowerCase() === 'anonymous') return res.status(400).json({ error: 'A nickname other than Anonymous is required.' });
+  if (playerName.length > 60) return res.status(400).json({ error: 'Nickname must be 60 characters or fewer.' });
   if (title.length > 120) return res.status(400).json({ error: 'Title must be 120 characters or fewer.' });
   if (answer.length > 200) return res.status(400).json({ error: 'Secret answer must be 200 characters or fewer.' });
 
@@ -25,7 +28,7 @@ export default async function handler(req, res) {
     const rows = await supabaseFetch('puzzles?select=id,title,created_at,status', {
       method: 'POST',
       headers: { Prefer: 'return=representation' },
-      body: JSON.stringify({ id, title, secret_answer: answer, host_token: hostToken, status: 'active' })
+      body: JSON.stringify({ id, title, secret_answer: answer, host_token: hostToken, host_name: playerName, status: 'active' })
     });
     const puzzle = rows?.[0];
     if (!puzzle) throw new Error('Supabase did not return the created challenge');

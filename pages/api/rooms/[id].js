@@ -12,7 +12,7 @@ export default async function handler(req, res) {
 
   try {
     const queryId = encodeURIComponent(id);
-    const puzzles = await supabaseFetch(`puzzles?id=eq.${queryId}&select=id,title,created_at,status&limit=1`);
+    const puzzles = await supabaseFetch(`puzzles?id=eq.${queryId}&select=id,title,host_name,created_at,status&limit=1`);
     const puzzle = puzzles?.[0];
     if (!puzzle) return res.status(404).json({ error: 'Challenge not found.' });
 

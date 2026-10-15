@@ -11,6 +11,7 @@ create table if not exists public.puzzles (
   title text not null check (char_length(title) between 1 and 120),
   secret_answer text not null check (char_length(secret_answer) between 1 and 200),
   host_token text not null,
+  host_name text not null check (char_length(host_name) between 1 and 60 and lower(btrim(host_name)) <> 'anonymous'),
   created_at timestamptz not null default now(),
   status text not null default 'active' check (status in ('active', 'solved'))
 );
@@ -18,7 +19,7 @@ create table if not exists public.puzzles (
 create table if not exists public.guesses (
   id bigint generated always as identity primary key,
   puzzle_id text not null references public.puzzles(id) on delete cascade,
-  player_name text not null default 'Anonymous' check (char_length(player_name) between 1 and 60),
+  player_name text not null check (char_length(player_name) between 1 and 60 and lower(btrim(player_name)) <> 'anonymous'),
   guess_text text not null check (char_length(guess_text) between 1 and 200),
   is_correct boolean not null default false,
   created_at timestamptz not null default now()
@@ -49,10 +50,17 @@ begin
     return false;
   end if;
 
+  if p_player_name is null
+     or pg_catalog.btrim(p_player_name) = ''
+     or pg_catalog.lower(pg_catalog.btrim(p_player_name)) = 'anonymous'
+     or pg_catalog.char_length(pg_catalog.btrim(p_player_name)) > 60 then
+    raise exception 'A valid nickname other than Anonymous is required';
+  end if;
+
   insert into public.guesses (puzzle_id, player_name, guess_text, is_correct)
   values (
     p_puzzle_id,
-    coalesce(nullif(pg_catalog.btrim(p_player_name), ''), 'Anonymous'),
+    pg_catalog.btrim(p_player_name),
     p_guess_text,
     p_is_correct
   );

@@ -15,6 +15,12 @@ The included `supabase-schema.sql` is intended for a newly created Supabase proj
 
 The schema uses `status = 'active' | 'solved'`, text IDs, and a transactional `submit_guess` database function. Run it only against the intended new project.
 
+## Nicknames (existing database)
+
+If the database already contains data, run `migrations/2026-10-15-nicknames.sql` in Supabase SQL Editor. This migration preserves existing rows and labels existing puzzles without a saved creator nickname as `Unknown host`. Do not rerun the full schema as a migration.
+
+Nicknames are stored in the current browser's `localStorage`; they are not synchronized across devices. New challenge records save the creator nickname, and each guess saves the nickname used at submission time.
+
 ## 2. Environment variables
 
 Set these in `.env.local` for local development and in Vercel → Project Settings → Environment Variables for **Production** (and Preview if you test previews):

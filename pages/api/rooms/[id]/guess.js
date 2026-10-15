@@ -10,8 +10,9 @@ export default async function handler(req, res) {
 
   const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
   const guess = typeof req.body?.guess === 'string' ? req.body.guess.trim() : '';
-  const playerName = typeof req.body?.playerName === 'string' ? req.body.playerName.trim() : 'Anonymous';
+  const playerName = typeof req.body?.playerName === 'string' ? req.body.playerName.trim() : '';
   if (!id || typeof id !== 'string' || id.length > 64) return res.status(400).json({ error: 'Invalid challenge ID.' });
+  if (!playerName || playerName.toLowerCase() === 'anonymous') return res.status(400).json({ error: 'A nickname other than Anonymous is required.' });
   if (!guess) return res.status(400).json({ error: 'Please enter a guess.' });
   if (guess.length > 200) return res.status(400).json({ error: 'Guess must be 200 characters or fewer.' });
   if (playerName.length > 60) return res.status(400).json({ error: 'Player name must be 60 characters or fewer.' });
@@ -28,7 +29,7 @@ export default async function handler(req, res) {
       method: 'POST',
       body: JSON.stringify({
         p_puzzle_id: id,
-        p_player_name: playerName || 'Anonymous',
+        p_player_name: playerName,
         p_guess_text: guess,
         p_is_correct: correct
       })

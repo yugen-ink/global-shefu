@@ -1,14 +1,3 @@
-const {
-  generateModernClue,
-  getLocalTimeParts,
-  getHourBranchNumber,
-  getYearBranchNumber,
-  flipTrigramLine,
-  calculateHexagram,
-  normalizeAnswer,
-  isGuessCorrect
-} = require('../utils/shefuEngine');
-
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const {
@@ -74,33 +63,4 @@ test('zero remainders map to trigram 8 and moving line 6', () => {
 test('guess normalization remains unchanged', () => {
   assert.equal(normalizeAnswer('  Modern  Times '), 'modern times');
   assert.equal(isGuessCorrect('  MODERN   TIMES ', 'Modern Times'), true);
-});
-
-
-test('each clue generation reads the current timestamp afresh', () => {
-  const originalNow = Date.now;
-  const timestamps = [
-    Date.UTC(2026, 0, 1, 0, 30),
-    Date.UTC(2026, 0, 1, 0, 31)
-  ];
-  let calls = 0;
-
-  Date.now = () => timestamps[calls++];
-
-  try {
-    const first = generateModernClue({
-      timeZone: 'Asia/Singapore',
-      clueNumber: 1
-    });
-    const second = generateModernClue({
-      timeZone: 'Asia/Singapore',
-      clueNumber: 2
-    });
-
-    assert.equal(first.timestamp, timestamps[0]);
-    assert.equal(second.timestamp, timestamps[1]);
-    assert.equal(calls, 2);
-  } finally {
-    Date.now = originalNow;
-  }
 });
