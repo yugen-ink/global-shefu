@@ -1,6 +1,6 @@
-# Global Shefu — Clean Rebuild V1
+# KronoClue — Clean Rebuild V1
 
-Core loop: create challenge → share room URL → reveal clues → submit guesses → shared guess history.
+KronoClue is a time-inspired guessing game. Core loop: create a challenge → share the room URL → reveal all four clues at once → submit guesses → view shared guess history.
 
 The included `supabase-schema.sql` is intended for a newly created Supabase project. It is non-destructive and does not drop existing tables. Review it before running. `CREATE TABLE IF NOT EXISTS` does not repair an older, incompatible table definition; use this on the fresh project you just created.
 

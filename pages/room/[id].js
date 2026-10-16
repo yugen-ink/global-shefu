@@ -78,7 +78,7 @@ export default function Room() {
   return (
     <main className="min-h-screen flex flex-col items-center px-6 py-6">
       <nav className="w-full max-w-xl py-4 border-b border-white/10 flex justify-between">
-        <span className="tracking-widest font-mono uppercase text-xs opacity-60">Global Async Shefu</span>
+        <span className="tracking-widest font-mono uppercase text-xs opacity-60">KronoClue</span>
         <button onClick={() => router.push('/')} className="text-xs opacity-60">[ HOME ]</button>
       </nav>
 

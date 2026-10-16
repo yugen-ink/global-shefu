@@ -1,4 +1,4 @@
--- Non-destructive nickname migration for an existing Global Shefu database.
+-- Non-destructive nickname migration for an existing KronoClue database.
 -- Preserves existing puzzles and guesses. Run once in Supabase SQL Editor.
 begin;
 

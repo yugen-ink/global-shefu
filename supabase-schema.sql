@@ -1,4 +1,4 @@
--- Global Shefu clean schema for a NEW Supabase project.
+-- KronoClue clean schema for a NEW Supabase project.
 -- Non-destructive: this script does not drop tables or delete data.
 -- Run in Supabase Dashboard -> SQL Editor on the intended new project.
 -- All application database access is server-side through the service-role key.

@@ -40,12 +40,12 @@ export default function Home() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-between px-6 py-6">
       <nav className="w-full max-w-xl py-4 border-b border-white/10 flex justify-between">
-        <span className="tracking-widest font-mono uppercase text-xs opacity-60">Global Async Shefu</span>
+        <span className="tracking-widest font-mono uppercase text-xs opacity-60">KronoClue</span>
       </nav>
       <div className="w-full max-w-xl py-12">
         <section className="text-center mb-12">
-          <h1 className="text-3xl font-light tracking-tight">The Global Guessing Board</h1>
-          <p className="mt-5 text-sm text-neutral-400 leading-relaxed">Hide an item, share the room, and let the world deduce it.</p>
+          <h1 className="text-3xl font-light tracking-tight">KronoClue</h1>
+          <p className="mt-5 text-sm text-neutral-400 leading-relaxed">A mystery shaped by time. Hide an item, reveal four clues, and let others deduce it.</p>
         </section>
 
         <form onSubmit={createChallenge} className="space-y-5">
@@ -67,7 +67,7 @@ export default function Home() {
           <button disabled={loading} className="w-full py-3 bg-white text-black font-medium disabled:opacity-50">{loading ? 'Creating...' : 'Create a Challenge'}</button>
         </form>
       </div>
-      <footer className="w-full max-w-xl text-center py-4 border-t border-white/10 text-xs text-neutral-600 font-mono">V1 • Global Minimalist Shefu</footer>
+      <footer className="w-full max-w-xl text-center py-4 border-t border-white/10 text-xs text-neutral-600 font-mono">A MYSTERY SHAPED BY TIME</footer>
     </main>
   );
 }
