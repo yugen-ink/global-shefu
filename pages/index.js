@@ -61,7 +61,7 @@ export default function Home() {
           <div>
             <label className="block text-xs uppercase tracking-wider text-neutral-400 mb-2">Secret Item</label>
             <input required value={answer} onChange={e => setAnswer(e.target.value)} placeholder="Only you should know this" className="w-full bg-neutral-900 border border-neutral-800 p-3 focus:outline-none focus:border-white" />
-            <p className="mt-2 text-xs text-neutral-600">The answer is stored server-side and is never shown to players.</p>
+            <p className="mt-2 text-xs text-neutral-600">Only you know the secret item. It will never be revealed to anyone else.</p>
           </div>
           {error && <p className="text-sm text-red-300">{error}</p>}
           <button disabled={loading} className="w-full py-3 bg-white text-black font-medium disabled:opacity-50">{loading ? 'Creating...' : 'Create a Challenge'}</button>
