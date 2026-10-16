@@ -57,7 +57,7 @@ export default function Room() {
 
   async function submitGuess(e) {
     e.preventDefault();
-    if (!nickname) { setStatus('Please save a nickname before guessing.'); return; }
+    if (!nickname) { setStatus('Please enter your name first.'); return; }
     if (!guess.trim()) return;
     setStatus('Submitting...');
     const response = await fetch(`/api/rooms/${id}/guess`, {
@@ -117,7 +117,7 @@ export default function Room() {
           <label className="block text-xs uppercase tracking-wider text-neutral-400">Your Guess</label>
           <div className="flex gap-2">
             <input disabled={puzzle.status === 'solved'} value={guess} onChange={e => setGuess(e.target.value)} placeholder="What is hidden?" className="flex-1 bg-neutral-900 border border-neutral-800 p-3 text-sm focus:outline-none focus:border-white disabled:opacity-40" />
-            <button disabled={puzzle.status === 'solved' || !nickname} className="px-5 bg-white text-black text-sm disabled:opacity-40">Submit</button>
+            <button disabled={puzzle.status === 'solved'} className="px-5 bg-white text-black text-sm disabled:opacity-40">Submit</button>
           </div>
           {status && <p className="text-sm text-neutral-400">{status}</p>}
         </form>
